@@ -1,0 +1,102 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import type { Album, Store } from "../../../markket/index.d";
+
+export interface Props {
+  slug: string;
+  album: CollectionEntry<"albums">;
+}
+
+export async function getStaticPaths() {
+  const albums = await getCollection("albums");
+  const stores = await getCollection("store");
+  const store = stores?.[0]?.data as Store;
+
+  const postResult = albums.map(album => ({
+    params: {
+      slug: album.data.slug,
+    },
+    props: {
+      album: album?.data,
+      store
+    },
+  }));
+
+  return [...postResult];
+}
+
+const { album, store } = Astro.props as { album: Album; store: Store };
+---
+
+<Layout store={store} page={{ Title: album.title } as any}>
+  <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+    <!-- Album Hero Section -->
+    <div class="relative pt-20 pb-16 px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-8 items-center">
+          <!-- Album Cover -->
+          <div class="w-64 h-64 md:w-80 md:h-80 flex-shrink-0">
+            <img
+              src={album.cover?.url}
+              alt={album.title}
+              class="w-full h-full object-cover rounded-lg shadow-2xl"
+            />
+          </div>
+
+          <!-- Album Info -->
+          <div class="flex-1 text-white">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">{album.title}</h1>
+            {album.description && (
+              <p class="text-gray-300 text-lg mb-6 max-w-2xl">
+                {album.description}
+              </p>
+            )}
+            <div class="flex items-center gap-4 text-sm text-gray-400">
+              <div>{album.tracks?.length || 0} tracks</div>
+              <div>·</div>
+              <div>Released {new Date(album.publishedAt).toLocaleDateString()}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tracks List -->
+    <div class="max-w-6xl mx-auto px-4 pb-20">
+      <div class="bg-white/10 backdrop-blur-lg rounded-xl overflow-hidden">
+        {album.tracks?.map((track, index) => (
+          <div class={`flex items-center gap-4 p-4 hover:bg-white/5 transition-colors ${
+            index !== 0 ? 'border-t border-white/10' : ''
+          }`}>
+            <div class="w-8 text-center text-gray-500">
+              {(index + 1).toString().padStart(2, '0')}
+            </div>
+
+            <div class="flex-1">
+              <h3 class="text-white font-medium">{track.title}</h3>
+              {track.description && (
+                <p class="text-sm text-gray-400 mt-1">{track.description}</p>
+              )}
+            </div>
+
+            {track.urls && track.urls.length > 0 && (
+              <div class="flex gap-2">
+                {track.urls.map(url => (
+                  <a
+                    href={url.URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="px-3 py-1 rounded-full text-sm bg-white/10 hover:bg-white/20 text-white transition-colors"
+                  >
+                    {url.Label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
