@@ -13,13 +13,13 @@ export async function getStaticPaths() {
   const stores = await getCollection("store");
   const store = stores?.[0]?.data as Store;
 
-  const postResult = albums.map(album => ({
+  const postResult = albums.map((album) => ({
     params: {
       slug: album.data.slug,
     },
     props: {
       album: album?.data,
-      store
+      store,
     },
   }));
 
@@ -31,71 +31,125 @@ const { album, store } = Astro.props as { album: Album; store: Store };
 
 <Layout store={store} page={{ Title: album.title } as any}>
   <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
-    <!-- Album Hero Section -->
+    <!-- Hero Section -->
     <div class="relative pt-20 pb-16 px-4">
       <div class="max-w-6xl mx-auto">
         <div class="flex flex-col md:flex-row gap-8 items-center">
           <!-- Album Cover -->
-          <div class="w-64 h-64 md:w-80 md:h-80 flex-shrink-0">
+          <div
+            class="w-64 h-64 md:w-80 md:h-80 flex-shrink-0 group relative overflow-hidden rounded-lg"
+          >
             <img
               src={album.cover?.url}
               alt={album.title}
-              class="w-full h-full object-cover rounded-lg shadow-2xl"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+            </div>
           </div>
 
           <!-- Album Info -->
           <div class="flex-1 text-white">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">{album.title}</h1>
-            {album.description && (
-              <p class="text-gray-300 text-lg mb-6 max-w-2xl">
-                {album.description}
-              </p>
-            )}
-            <div class="flex items-center gap-4 text-sm text-gray-400">
-              <div>{album.tracks?.length || 0} tracks</div>
-              <div>·</div>
-              <div>Released {new Date(album.publishedAt).toLocaleDateString()}</div>
+            <h1
+              class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400"
+            >
+              {album.title}
+            </h1>
+            {
+              album.description && (
+                <p class="text-gray-300 text-lg mb-6 max-w-2xl leading-relaxed">
+                  {album.description}
+                </p>
+              )
+            }
+            <div class="flex flex-wrap gap-6 text-sm text-gray-400">
+              <div class="flex items-center gap-2">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  >
+                  </path>
+                </svg>
+                <span>
+                  {album.tracks?.length || 0}
+                  {album.slug?.replace(/-.*/, "")}
+                </span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  >
+                  </path>
+                </svg>
+                <span>{store?.title}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Tracks List -->
+    <!-- Photo Grid -->
     <div class="max-w-6xl mx-auto px-4 pb-20">
-      <div class="bg-white/10 backdrop-blur-lg rounded-xl overflow-hidden">
-        {album.tracks?.map((track, index) => (
-          <div class={`flex items-center gap-4 p-4 hover:bg-white/5 transition-colors ${
-            index !== 0 ? 'border-t border-white/10' : ''
-          }`}>
-            <div class="w-8 text-center text-gray-500">
-              {(index + 1).toString().padStart(2, '0')}
-            </div>
-
-            <div class="flex-1">
-              <h3 class="text-white font-medium">{track.title}</h3>
-              {track.description && (
-                <p class="text-sm text-gray-400 mt-1">{track.description}</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {
+          album.tracks?.map((photo, index) => (
+            <div class="group relative overflow-hidden rounded-xl bg-white/10 backdrop-blur-sm">
+              {photo.media?.[0]?.url && (
+                <div class="aspect-[4/3] overflow-hidden">
+                  <img
+                    src={photo.media[0].url}
+                    alt={photo.title}
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
               )}
-            </div>
-
-            {track.urls && track.urls.length > 0 && (
-              <div class="flex gap-2">
-                {track.urls.map(url => (
-                  <a
-                    href={url.URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="px-3 py-1 rounded-full text-sm bg-white/10 hover:bg-white/20 text-white transition-colors"
-                  >
-                    {url.Label}
-                  </a>
-                ))}
+              <div class="p-4">
+                <h3 class="text-white font-medium text-lg mb-2">
+                  {photo.title}
+                </h3>
+                {photo.description && (
+                  <p class="text-gray-400 text-sm line-clamp-2">
+                    {photo.description}
+                  </p>
+                )}
+                {photo.urls && photo.urls.length > 0 && (
+                  <div class="flex gap-2 mt-4">
+                    {photo.urls.map((url) => (
+                      <a
+                        href={url.URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="px-3 py-1 rounded-full text-sm bg-white/10 hover:bg-white/20 text-white transition-colors"
+                      >
+                        {url.Label}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))
+        }
       </div>
     </div>
   </div>
