@@ -105,7 +105,9 @@ function mapTypeToZodSchema(type: string, field: any): ZodTypeAny {
     uid: () => z.string(),
     media: () =>
       z.object({
-        allowedTypes: z.array(z.enum(field.allowedTypes)),
+        allowedTypes: Array.isArray(field.allowedTypes)
+          ? z.array(z.enum(field.allowedTypes))
+          : z.array(z.string()),
         type: z.literal("media"),
         multiple: z.boolean(),
         url: z.string(),
@@ -156,10 +158,13 @@ function mapTypeToZodSchema(type: string, field: any): ZodTypeAny {
  */
 function generateZodSchema(attributes: Record<string, any>): ZodObject<any> {
   const shape: Record<string, ZodTypeAny> = {};
+
+
   for (const [key, value] of Object.entries(attributes)) {
     const { type, ...rest } = value;
     shape[key] = mapTypeToZodSchema(type, rest);
   }
+
   return z.object(shape);
 }
 

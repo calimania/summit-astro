@@ -102,12 +102,6 @@ export const markketplace = {
 
 ## Additional imports
 
-# @mantine
-
-Build fully functional accessible web applications faster than ever – includes more than 100 customizable components and 50 hooks to cover you in any situation
-
-[mantine documentation](https://mantine.dev/getting-started/)
-
 # @tabler/icons-react
 
 5880 pixel-perfect icons for web design

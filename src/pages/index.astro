@@ -1,11 +1,20 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { getCollection } from "astro:content";
+
+import HomePage from "../components/home.page.astro";
+
+import type { Store, Page } from "../markket/index.d";
+
+const stores = await getCollection("store");
+const pages = await getCollection("pages");
+
+const homepage = pages.find((page) => page?.data?.slug === "home")
+  ?.data as Page;
+const store = stores?.[0]?.data as any as Store;
 ---
 
 <Layout>
-	<Welcome />
+  <HomePage store={store} page={homepage} />
 </Layout>
