@@ -1,0 +1,103 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import type { Store, Article } from "../../markket/index.d";
+
+const stores = await getCollection("store");
+const articles = await getCollection("posts");
+const store = stores?.[0]?.data as any as Store;
+
+const pages = await getCollection("pages");
+const blogPage = pages.find(page => page.data.slug === "blog")?.data;
+
+
+console.log({articles });
+
+// Sort articles by date
+const sortedArticles = articles
+  .map(article => article.data)
+  .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+---
+
+<Layout store={store} page={{ Title: "Blog" } as any}>
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <!-- Hero Section -->
+    <div class="relative pt-20 pb-16 px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          {blogPage?.Title || "Blog"}
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          {blogPage?.SEO?.metaDescription || "Read the latest articles from our blog."}
+        </p>
+      </div>
+    </div>
+
+    <!-- Blog Grid -->
+    <div class="max-w-6xl mx-auto px-4 pb-20">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {sortedArticles.map((article) => (
+          <a
+            href={`/blog/${article.slug}`}
+            class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            {article.SEO?.socialImage?.url && (
+              <div class="aspect-video overflow-hidden">
+                <img
+                  src={article.SEO.socialImage.url}
+                  alt={article.Title}
+                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            )}
+
+            <div class="p-6">
+              {article.tags && article.tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mb-3">
+                  {article.tags.map(tag => (
+                    <span
+                      class="px-2 py-1 text-xs rounded-full"
+                      style={tag.Color ?
+                        `background-color: ${tag.Color}20; color: ${tag.Color}` :
+                        "background-color: #e5e7eb; color: #374151"
+                      }
+                    >
+                      {tag.Label}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <h2 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                {article.Title}
+              </h2>
+
+              {article.SEO?.metaDescription && (
+                <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                  {article.SEO.metaDescription}
+                </p>
+              )}
+
+              <div class="flex items-center justify-between text-sm text-gray-500">
+                <time datetime={article.publishedAt}>
+                  {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+                <span class="flex items-center gap-1">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Read more
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Layout>
