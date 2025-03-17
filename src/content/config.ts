@@ -20,7 +20,6 @@ const albums = defineCollection({
   }),
 });
 
-
 const store = defineCollection({
   loader: strapiLoader({
     contentType: "store",
@@ -56,4 +55,5 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { posts, pages, products, events , store, albums  };
+export const collections = { posts, pages, products, events, store, albums };
+

@@ -37,7 +37,19 @@ const { album, track, store } = Astro.props;
 const otherTracks = album.tracks?.filter((t) => t.id !== track.id) || [];
 ---
 
-<Layout store={store} SEO={track?.SEO}>
+<Layout
+  store={store}
+  SEO={{
+    ...track.SEO,
+    metaTitle: track.title || album.title,
+    metaDescription: track.description || album.description,
+    socialImage: {
+      url: (track.media?.[0]?.url ||
+        track?.SEO?.socialImage?.url ||
+        (album.SEO?.socialImage?.url as string)) as string,
+    },
+  }}
+>
   <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
     <!-- Navigation Bar -->
     <div class="fixed top-0 left-0 right-0 bg-black/20 backdrop-blur-lg z-50">
