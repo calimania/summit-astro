@@ -1,7 +1,11 @@
 ---
 const { store, page } = Astro.props;
+
+import Content from "./content.blocks";
 ---
 
 <div>
-  {page?.Title || store?.title }
+  {page?.Title || store?.title}
+
+  <Content params={{ page }} />
 </div>
