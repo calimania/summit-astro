@@ -15,9 +15,9 @@ const Footer = ({store, page}: FooterProps) => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
-            {store?.Logo?.url && (
+            {store?.Favicon?.url && (
               <img
-                src={store.Logo.url}
+                src={store?.Favicon?.url}
                 alt={`${store.title} logo`}
                 className="h-12 mb-4"
               />
