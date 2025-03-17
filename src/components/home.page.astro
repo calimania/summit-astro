@@ -9,7 +9,9 @@ const description =
   page?.Content?.[0]?.children?.[0]?.text || store?.Description || "";
 const logoUrl = store?.Logo?.url || markketplace.styles.logo;
 const coverUrl =
-  store?.cover?.url || page?.cover?.url || markketplace.styles.cover;
+  store?.Cover?.url || page?.SEO?.socialImage?.url || markketplace.styles.cover;
+
+console.log({ store });
 ---
 
 <main class="relative min-h-screen">
