@@ -41,7 +41,7 @@ const posts = defineCollection({
   loader: strapiLoader({
     contentType: "article",
     filter: `filters[store][slug][$eq]=${markketplace.store_slug}`,
-    populate: 'SEO.socialImage,Tags,store,cover',
+    populate: 'SEO.socialImage,Tags,cover',
     paginate: {
       limit: 100,
     }

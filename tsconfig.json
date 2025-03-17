@@ -4,6 +4,21 @@
     ".astro/types.d.ts",
     "**/*"
   ],
+  "baseUrl": ".",
+  "paths": {
+    "@/layouts/*": [
+      "src/layouts/*"
+    ],
+    "@components/*": [
+      "src/components/*"
+    ],
+    "@/styles/*": [
+      "src/styles/*"
+    ],
+    "@/markket/*": [
+      "src/markket/*"
+    ],
+  },
   "exclude": [
     "dist"
   ],

@@ -30,7 +30,7 @@ export async function getStaticPaths() {
 const { album, store } = Astro.props as { album: Album; store: Store };
 ---
 
-<Layout store={store} page={{ Title: album.title } as any}>
+<Layout store={store} page={{ Title: album.title } as any} SEO={album?.SEO}>
   <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
     <!-- Hero Section -->
     <div class="relative pt-20 pb-16 px-4">

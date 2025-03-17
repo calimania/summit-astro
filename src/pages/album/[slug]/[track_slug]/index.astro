@@ -39,6 +39,7 @@ const otherTracks = album.tracks?.filter((t) => t.id !== track.id) || [];
 <Layout
   store={store}
   page={{ Title: `${track.title} - ${album.title}` } as any}
+  SEO={track?.SEO}
 >
   <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
     <!-- Hero Section -->
