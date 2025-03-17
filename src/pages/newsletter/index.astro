@@ -1,0 +1,34 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import type { Store, Article } from "../../markket/index.d";
+
+const stores = await getCollection("store");
+const store = stores?.[0]?.data as any as Store;
+
+const pages = await getCollection("pages");
+const NewsletterPage = pages.find(
+  (page) => page.data.slug === "newsletter"
+)?.data;
+---
+
+<Layout store={store} page={NewsletterPage as any}>
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <!-- Hero Section -->
+    <div class="relative pt-20 pb-16 px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1
+          class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+        >
+          {NewsletterPage?.Title || "Newsletter "}
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          {
+            NewsletterPage?.SEO?.metaDescription ||
+              "Subscribe to our newsletter to get the latest updates"
+          }
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>

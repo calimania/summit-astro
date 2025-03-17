@@ -70,6 +70,7 @@ const Footer = ({store, page}: FooterProps) => {
               </a>
             ))} */}
             {/* <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">home</a> */}
+
             {!isHomePage && (
               <a
                 href="/"
@@ -78,6 +79,12 @@ const Footer = ({store, page}: FooterProps) => {
                 Home
               </a>
             )}
+            <a
+              href="/about"
+              className="text-gray-400 hover:text-white transition-colors"
+            >
+              About
+            </a>
           </div>
         </div>
       </div>
