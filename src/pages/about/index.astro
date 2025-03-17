@@ -1,0 +1,87 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import AlbumsGrid from "../../components/albums.grid";
+import type { Store, Page, Album } from "../../markket/index.d";
+
+const stores = await getCollection("store");
+const pages = await getCollection("pages");
+
+const aboutPage = pages.find((page) => page?.data?.slug === "about")
+  ?.data as Page;
+const store = stores?.[0]?.data as any as Store;
+
+const subPages = pages
+  .filter((page) => page?.data?.slug !== "about" && page?.data?.slug !== "home")
+  .map((page) => page.data);
+
+---
+
+
+<Layout store={store} page={aboutPage}>
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <!-- Hero Section -->
+    <div class="relative pt-20 pb-16 px-4">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          {aboutPage?.Title || "About Us"}
+        </h1>
+
+        {aboutPage?.Content && (
+          <div class="prose prose-lg max-w-none">
+            {/* <Content params={{ page: aboutPage }} /> */}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- Sub Pages Grid -->
+    {subPages.length > 0 && (
+      <div class="max-w-6xl mx-auto px-4 pb-20">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">
+          Explore More
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {subPages.map((page) => (
+            <a
+              href={`/about/${page.slug}`}
+              class="group relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              {page.SEO?.socialImage?.url && (
+                <div class="aspect-video overflow-hidden">
+                  <img
+                    src={page.SEO.socialImage.url}
+                    alt={page.Title}
+                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              )}
+              <div class="p-6">
+                <h3 class="text-xl font-bold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">
+                  {page.Title}
+                </h3>
+                {page.SEO?.metaDescription && (
+                  <p class="text-gray-600 line-clamp-2">
+                    {page.SEO.metaDescription}
+                  </p>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Albums Section (if present) -->
+    {aboutPage?.albums && aboutPage.albums.length > 0 && (
+      <div class="bg-gray-50 py-16">
+        <div class="max-w-6xl mx-auto px-4">
+          <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">
+            Featured Albums
+          </h2>
+          <AlbumsGrid albums={aboutPage.albums as Album[]} store={store} />
+        </div>
+      </div>
+    )}
+  </div>
+</Layout>

@@ -1,5 +1,5 @@
 ---
-import type { Page, Store } from "../markket/index.d";
+import type { Page, SEO, Store } from "../markket/index.d";
 import { markketplace } from "../config";
 import Footer from "../components/layout.footer";
 import Posthog from "../components/posthog.astro";
@@ -10,9 +10,10 @@ export interface Props {
   redirect?: string;
   page?: Page;
   store?: Store;
+  SEO?: SEO;
 }
 
-const { redirect = "", store, page } = Astro.props;
+const { redirect = "", store, page, SEO } = Astro.props;
 const { language, textDirection } = { language: "en", textDirection: "ltr" };
 
 const icon = {
@@ -35,15 +36,21 @@ const icon = {
     <meta name"description" content={page?.SEO?.metaDescription} />
     <meta
       property="og:image"
-      content={page?.SEO?.socialImage?.url || store?.SEO?.socialImage?.url}
+      content={SEO?.socialImage?.url ||
+        page?.SEO?.socialImage?.url ||
+        store?.SEO?.socialImage?.url}
     />
     <meta
       property="og:description"
-      content={page?.SEO?.metaDescription || store?.SEO?.metaDescription}
+      content={SEO?.metaDescription ||
+        page?.SEO?.metaDescription ||
+        store?.SEO?.metaDescription}
     />
     <meta
       property="og:title"
-      content={page?.SEO?.metaTitle || store?.SEO?.metaDescription}
+      content={SEO?.metaTitle ||
+        page?.SEO?.metaTitle ||
+        store?.SEO?.metaDescription}
     />
     <meta property="og:type" content="website" />
     <meta
