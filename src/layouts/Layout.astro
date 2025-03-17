@@ -1,5 +1,6 @@
 ---
 import type { Page, Store } from "../markket/index.d";
+import { markketplace } from "../config";
 
 export interface Props {
   redirect?: string;
@@ -9,6 +10,11 @@ export interface Props {
 
 const { redirect = "", store, page } = Astro.props;
 const { language, textDirection } = { language: "en", textDirection: "ltr" };
+
+const icon = {
+  url: store?.Favicon?.url || markketplace.styles.favicon,
+  type: "image/png",
+};
 ---
 
 <!doctype html>
@@ -18,7 +24,7 @@ const { language, textDirection } = { language: "en", textDirection: "ltr" };
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type={icon.type} href={icon.url} />
     <meta name="generator" content={Astro.generator} />
     <title>{store?.title || page?.Title}</title>
     {redirect && <meta http-equiv="refresh" content={`0;url=${redirect}`} />}
