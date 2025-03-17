@@ -1,0 +1,97 @@
+---
+const { store, page } = Astro.props;
+import Content from "./content.blocks";
+import { markketplace } from "../config";
+
+// Fallbacks
+const heroTitle = page?.Title || store?.title || markketplace.content.title;
+const description =
+  page?.Content?.[0]?.children?.[0]?.text || store?.Description || "";
+const logoUrl = store?.Logo?.url || markketplace.styles.logo;
+const coverUrl =
+  store?.Cover?.url || page?.SEO?.socialImage?.url || markketplace.styles.cover;
+
+console.log({ store });
+---
+
+<main class="relative min-h-screen">
+  <!-- Hero Section with Background -->
+  <div class="relative h-screen">
+    <div class="absolute inset-0">
+      <img src={coverUrl} alt={heroTitle} class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+
+    <!-- Content Overlay -->
+    <div
+      class="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center"
+    >
+      {
+        logoUrl && (
+          <img
+            src={logoUrl}
+            alt={`${store?.title} logo`}
+            class="w-32 h-32 mb-8 rounded-full bg-white/10 p-4 backdrop-blur-sm"
+          />
+        )
+      }
+
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 tracking-tight">
+        {heroTitle}
+      </h1>
+
+      {
+        description && (
+          <p class="max-w-2xl mx-auto text-xl text-white/90 mb-8 leading-relaxed">
+            {description}
+          </p>
+        )
+      }
+
+      {
+        store?.URLS && (
+          <div class="flex flex-wrap gap-4 justify-center">
+            {store.URLS.map((link: any) => (
+              <a
+                href={link.URL}
+                target={link?.URL?.startsWith("http") ? "_blank" : "_self"}
+                class="px-8 py-3 rounded-full bg-white/90 hover:bg-white text-gray-900 font-medium transition-all hover:scale-105"
+              >
+                {link.Label}
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div
+      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce"
+    >
+      <svg
+        class="w-6 h-6 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M19 14l-7 7m0 0l-7-7m7 7V3"
+        >
+        </path>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  {
+    page && (
+      <section class="max-w-4xl mx-auto px-4 py-16">
+        <Content params={{ page }} />
+      </section>
+    )
+  }
+</main>
