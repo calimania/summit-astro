@@ -31,16 +31,6 @@ const Footer = ({store, page}: FooterProps) => {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {!isHomePage && (
-                <li>
-                  <a
-                    href="/"
-                    className="text-gray-400 hover:text-white transition-colors"
-                  >
-                    Home
-                  </a>
-                </li>
-              )}
               {store?.URLS?.map((link) => (
                 <li key={link.id}>
                   <a
@@ -79,7 +69,15 @@ const Footer = ({store, page}: FooterProps) => {
                 {link.Label}
               </a>
             ))} */}
-            <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">home</a>
+            {/* <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">home</a> */}
+            {!isHomePage && (
+              <a
+                href="/"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                Home
+              </a>
+            )}
           </div>
         </div>
       </div>
