@@ -14,8 +14,13 @@ const homepage = pages.find((page) => page?.data?.slug === "home")
   ?.data as Page;
 const store = stores?.[0]?.data as any as Store;
 import "../styles/global.css";
+
+const metadata = {
+  title: "Calima - Secret Executive Society",
+  ignoreTitleTemplate: true,
+};
 ---
 
-<Layout>
+<Layout metadata={metadata}>
   <HomePage store={store} page={homepage} />
 </Layout>

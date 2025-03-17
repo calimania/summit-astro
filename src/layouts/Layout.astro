@@ -1,22 +1,43 @@
+---
+import type { Page, Store } from "../markket/index.d";
+
+export interface Props {
+  redirect?: string;
+  page?: Page;
+  store?: Store;
+}
+
+const { redirect = "", store, page } = Astro.props;
+const { language, textDirection } = { language: "en", textDirection: "ltr" };
+---
+
 <!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="en" lang={language} dir={textDirection}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{store?.title || page?.Title}</title>
+    {redirect && <meta http-equiv="refresh" content={`0;url=${redirect}`} />}
+    <meta name"description" content={page?.SEO?.metaDescription} />
+    <meta
+      name="og:image"
+      content={page?.SEO?.socialImage?.url || store?.SEO?.socialImage?.url}
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 </style>
