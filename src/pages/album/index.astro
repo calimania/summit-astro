@@ -1,15 +1,16 @@
 ---
 import { getCollection } from "astro:content";
 import AlbumsGrid from "../../components/albums.grid";
-import type { Album, Store , Page} from "../../markket/index.d";
+import type { Album, Store, Page } from "../../markket/index.d";
 import Layout from "../../layouts/Layout.astro";
-import Markdown from '../../components/content.md';
+import Markdown from "../../components/content.md";
+import { IconChevronsLeft } from "@tabler/icons-react";
 
 const albums = await getCollection("albums");
 const stores = await getCollection("store");
 const store = stores?.[0]?.data as any as Store;
 const pages = await getCollection("pages");
-const homepage = pages?.find(page => page.data.slug === "home")?.data;
+const homepage = pages?.find((page) => page.data.slug === "home")?.data;
 
 // Get a random album cover for the hero background
 
@@ -24,19 +25,34 @@ const heroBackground = store?.Cover?.url || albums[0]?.data?.cover?.url;
         alt="Albums collection"
         class="w-full h-full object-cover"
       />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80"
+      >
+      </div>
     </div>
 
     <div class="relative z-10 text-center px-4 py-20">
       <h1 class="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
         {store?.title || homepage?.Title}
       </h1>
-      <Markdown markdown_string={store?.Description } className="text-white text-xl text-left"/>
+      <Markdown
+        markdown_string={store?.Description}
+        className="text-white text-xl text-left"
+      />
     </div>
   </div>
   <div class="bg-gray-50">
+    <div class="mb-8 mt-8 px-4">
+      <a
+        href={`/`}
+        class="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2"
+      >
+        <IconChevronsLeft size={16} />
+        Back to home
+      </a>
+    </div>
     <AlbumsGrid
-      albums={albums.map(album => album.data) as any as Album[]}
+      albums={albums.map((album) => album.data) as any as Album[]}
       store={store}
     />
   </div>
