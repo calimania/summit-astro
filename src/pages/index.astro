@@ -13,6 +13,7 @@ const pages = await getCollection("pages");
 const homepage = pages.find((page) => page?.data?.slug === "home")
   ?.data as Page;
 const store = stores?.[0]?.data as any as Store;
+import "../styles/global.css";
 ---
 
 <Layout>
