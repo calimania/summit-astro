@@ -2,6 +2,7 @@
 import type { Page, Store } from "../markket/index.d";
 import { markketplace } from "../config";
 import Footer from "../components/layout.footer";
+import Posthog from "../components/posthog.astro";
 
 import "../styles/global.css";
 
@@ -33,21 +34,36 @@ const icon = {
     {redirect && <meta http-equiv="refresh" content={`0;url=${redirect}`} />}
     <meta name"description" content={page?.SEO?.metaDescription} />
     <meta
-      name="og:image"
+      property="og:image"
       content={page?.SEO?.socialImage?.url || store?.SEO?.socialImage?.url}
     />
+    <meta
+      property="og:description"
+      content={page?.SEO?.metaDescription || store?.SEO?.metaDescription}
+    />
+    <meta
+      property="og:title"
+      content={page?.SEO?.metaTitle || store?.SEO?.metaDescription}
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="”og:site_name”"
+      content={store?.SEO?.metaTitle || store?.title}
+    />
   </head>
+  <Posthog />
   <body>
     <slot />
     <Footer store={store} page={page} />
   </body>
-</html>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 
-<style>
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
+
+</html>
