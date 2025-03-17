@@ -16,7 +16,7 @@ const AlbumsGrid = ({ albums, store }: AlbumsGridProps) => {
 
           return (
             <a
-              href={`/albums/${album.slug}`}
+              href={`/album/${album.slug}`}
               key={album.id}
               className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
             >

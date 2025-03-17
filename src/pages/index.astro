@@ -6,7 +6,7 @@ import { getCollection } from "astro:content";
 import HomePage from "../components/home.page.astro";
 import Albums from "../components/albums.grid";
 
-import type { Store, Page } from "../markket/index.d";
+import type { Store, Page, Album } from "../markket/index.d";
 
 const stores = await getCollection("store");
 const pages = await getCollection("pages");
@@ -14,10 +14,9 @@ const pages = await getCollection("pages");
 const homepage = pages.find((page) => page?.data?.slug === "home")
   ?.data as Page;
 const store = stores?.[0]?.data as any as Store;
-import "../styles/global.css";
 ---
 
 <Layout store={store} page={homepage}>
   <HomePage store={store} page={homepage} />
-  <Albums albums={homepage.albums} store={store} />
+  <Albums albums={homepage.albums as Album[]} store={store} />
 </Layout>
