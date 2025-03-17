@@ -1,3 +1,5 @@
+import type { POST } from "astro/actions/runtime/route.js";
+
 interface ImportMetaEnv {
   /** Strapi REST Endpoint  */
   readonly STRAPI_URL: string;
@@ -7,4 +9,6 @@ interface ImportMetaEnv {
   readonly MARKKETPLACE_URL: string;
   /** Identifier to render all the store content during build */
   readonly STORE_SLUG: string;
+  /** posthog api key  */
+  readonly POSTHOG_KEY: string;
 }
