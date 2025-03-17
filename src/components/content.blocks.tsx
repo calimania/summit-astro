@@ -1,8 +1,51 @@
 import type { Page, ContentBlock , Album, AlbumTrack, Article } from "../markket/index.d";
 
-const Title = () => {}
-const CodeHighlight = () => {}
-const Code = () => {}
+
+const Title = ({ order = 1, children, className = "" }: { order: 1 | 2 | 3 | 4 | 5 | 6, children: React.ReactNode, className?: string }) => {
+
+  const baseStyle = "font-bold bg-gradient-to-r from-blue-600 to-pink-600 bg-clip-text text-transparent";
+  const sizeStyles = {
+    1: "text-4xl md:text-5xl mb-8",
+    2: "text-3xl md:text-4xl mb-6",
+    3: "text-2xl md:text-3xl mb-5",
+    4: "text-xl md:text-2xl mb-4",
+    5: "text-lg md:text-xl mb-3",
+    6: "text-base md:text-lg mb-2"
+  }[order];
+
+  switch (order) {
+    case 1:
+      return <h1 className={`${baseStyle} ${sizeStyles} ${className}`}>{children}</h1>;
+    case 2:
+      return <h2 className={`${baseStyle} ${sizeStyles} ${className}`}>{children}</h2>;
+    case 3:
+      return <h3 className={`${baseStyle} ${sizeStyles} ${className}`}>{children}</h3>;
+    case 4:
+      return <h4 className={`${baseStyle} ${sizeStyles} ${className}`}>{children}</h4>;
+    case 5:
+      return <h5 className={`${baseStyle} ${sizeStyles} ${className}`}>{children}</h5>;
+    case 6:
+      return <h6 className={`${baseStyle} ${sizeStyles} ${className}`}>{children}</h6>;
+    default:
+      return <h2 className={`${baseStyle} ${sizeStyles} ${className}`}>{children}</h2>;
+  };
+};
+
+const CodeHighlight = ({ code, language = "typescript", copyLabel = "Copy" }: { code: string, language?: string, copyLabel?: string }) => {
+  return (
+    <div className="relative group rounded-lg overflow-hidden bg-gray-900 my-6">
+      <pre className={`language-${language} p-4 overflow-x-auto`}>
+        <code className={`language-${language}`}>{code}</code>
+      </pre>
+      <button
+        onClick={() => navigator.clipboard.writeText(code)}
+        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1 rounded-md bg-white/10 hover:bg-white/20 text-white text-sm"
+      >
+        {copyLabel}
+      </button>
+    </div>
+  );
+};
 
 interface PageContentProps {
   params: {
@@ -27,38 +70,33 @@ export default function PageContent({ params, }: PageContentProps) {
     return null;
   }
 
-  const renderImage = (node: ContentBlock['children'][0], key: number) => {
-    if (!node.url || renderedImages.has(node.url)) {
-      return null;
-    }
 
-    if (!node.children?.[0]?.text) {
-      return null;
-    }
+  const renderImage = (node: ContentBlock['children'][0], key: number) => {
+    if (!node.url || renderedImages.has(node.url)) return null;
+    if (!node.children?.[0]?.text) return null;
+
+    renderedImages.add(node.url);
 
     return (
-      <figure key={key} className="image-container">
+      <figure key={key} className="my-8 group">
         <a
           href={node.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="block"
-          title={node.children?.[0]?.text || ''}
+          className="block overflow-hidden rounded-xl"
         >
-          <div className="rounded-xl">
-            <img
-              src={node.url}
-              alt={node.children?.[0]?.text || ''}
-              className="max-w-sm"
-              loading="lazy"
-            />
-          </div>
-          {node.children?.[0]?.text && (
-            <figcaption>
-              {node.children[0].text}
-            </figcaption>
-          )}
+          <img
+            src={node.url}
+            alt={node.children[0].text}
+            className="w-full transition duration-300 group-hover:scale-105"
+            loading="lazy"
+          />
         </a>
+        {node.children[0].text && (
+          <figcaption className="mt-3 text-sm text-center text-gray-600 italic">
+            {node.children[0].text}
+          </figcaption>
+        )}
       </figure>
     );
   };
@@ -66,7 +104,7 @@ export default function PageContent({ params, }: PageContentProps) {
   const renderInline = (node: ContentBlock['children'][0], key: number) => {
     if (node.code) {
       return (
-        <code key={key} className="inline-code">
+        <code key={key} className="px-1.5 py-0.5 bg-gray-100 rounded text-pink-600 text-sm font-mono">
           {node.text}
         </code>
       );
@@ -74,11 +112,7 @@ export default function PageContent({ params, }: PageContentProps) {
 
     if (node.type === 'link') {
       const isImage = node.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i);
-
-      if (isImage && renderedImages.has(node.url as string)) {
-        renderedImages.add(node.url as string);
-        return null;
-      }
+      if (isImage && renderedImages.has(node.url as string)) return null;
 
       return (
         <a
@@ -86,93 +120,62 @@ export default function PageContent({ params, }: PageContentProps) {
           href={node.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-markket-blue hover:text-markket-pink transition-colors"
+          className="text-blue-600 hover:text-pink-600 transition-colors underline decoration-2 decoration-blue-200 hover:decoration-pink-200"
         >
           {node.children?.[0]?.text}
         </a>
       );
     }
 
+    if (node.bold) {
+      return <strong key={key} className="font-semibold text-gray-900">{node.text}</strong>;
+    }
+
     return <span key={key}>{node.text}</span>;
   };
 
-  /**
-   * For the content blocks that are lists, we need to render them recursively
-   * @param node
-   * @param key
-   * @returns
-   */
   const renderListItem = (node: ContentBlock['children'][0], key: number) => {
     if (node.type !== 'list-item') return null;
 
     return (
-      <li key={key} className="list-item">
+      <li key={key} className="relative pl-6 mb-3 before:absolute before:left-0 before:top-[0.6em] before:w-2 before:h-2 before:rounded-full before:bg-gradient-to-r before:from-blue-600 before:to-pink-600">
         {node.children?.map((child, i) => renderInline(child, i))}
       </li>
     );
   };
 
-  const renderImageBlock = (imageData: any, key: number) => {
-    if (!imageData?.url) return null;
-
-    const caption = imageData.caption || imageData.alternativeText;
-
-    return (
-      <figure key={key} className="my-8">
-        <img
-          src={imageData.url}
-          alt={imageData.alternativeText || ''}
-          className="rounded-lg w-full max-w-3xl mx-auto"
-          width={imageData.width}
-          height={imageData.height}
-          loading="lazy"
-        />
-        {caption && (
-          <figcaption className="text-center text-sm text-gray-500 mt-2">
-            {caption}
-          </figcaption>
-        )}
-      </figure>
-    );
-  };
-
   const renderBlock = (block: ContentBlock) => {
-    if (block.type === 'paragraph') {
-      const imageNodes = block.children.filter(
-        child => child.type === 'link' &&
-          child.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i) &&
-          !renderedImages.has(child.url)
-      );
-
-      const textNodes = block.children.filter(
-        child => !(child.type === 'link' &&
-          child.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i))
-      );
-
-      return (
-        <>
-          {textNodes.length > 0 && (
-            <p>
-              {textNodes.map((child, i) => renderInline(child, i))}
-            </p>
-          )}
-          {imageNodes.length > 1 ? (
-            <div className="image-gallery">
-              {imageNodes.map((node, i) => renderImage(node, i))}
-            </div>
-          ) : (
-            imageNodes.map((node, i) => renderImage(node, i))
-          )}
-        </>
-      );
-    }
-
     switch (block.type) {
+      case 'paragraph':
+        return (
+          <p className="text-gray-700 leading-relaxed mb-6">
+            {block.children.map((child, i) => renderInline(child, i))}
+          </p>
+        );
+
       case 'heading':
         return (
-          <Title order={(block.level || 1) as 1 | 2 | 3 | 4 | 5 | 6} className="heading">
+          <Title order={(block.level || 1) as 1 | 2 | 3 | 4 | 5 | 6}>
             {block.children.map((child, i) => renderInline(child, i))}
           </Title>
+        );
+
+      case 'quote':
+        return (
+          <blockquote className="pl-6 my-8 border-l-4 border-gradient-to-b from-blue-600 to-pink-600">
+            <p className="italic text-gray-600">
+              {block.children.map((child, i) => renderInline(child, i))}
+            </p>
+          </blockquote>
+        );
+
+      case 'list':
+        return (
+          <ul className="space-y-2 my-6">
+            {block.children
+              .filter(child => child.type === 'list-item')
+              .map((child, i) => renderListItem(child, i))}
+          </ul>
         );
 
       case 'code':
@@ -185,36 +188,12 @@ export default function PageContent({ params, }: PageContentProps) {
                 .join('\n')}
               language="tsx"
               copyLabel="Copy code"
-              withCopyButton
             />
           </div>
         );
 
-      case 'list':
-        return (
-          <ul className="list-container">
-            {block.children
-              .filter(child => child.type === 'list-item')
-              .map((child, i) => renderListItem(child, i))}
-          </ul>
-        );
-
-      case 'quote':
-        return (
-          <blockquote className="border-l-4 border-markket-blue pl-4 my-4 italic text-gray-700">
-            {block.children.map((child, i) => renderInline(child, i))}
-          </blockquote>
-        );
-
-      case 'code':
-        return (
-          <Code block className="my-4 p-4" style={{ whiteSpace: 'pre' }}>
-            {block.children.map(child => child.text).join('\n')}
-          </Code>
-        );
-
       case 'image':
-        return renderImageBlock(block.image, 0);
+        return renderImage(block.children[0], 0);
 
       default:
         return null;

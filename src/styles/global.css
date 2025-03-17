@@ -1,4 +1,12 @@
 @import "tailwindcss";
+/* @import "./blocks.scss"; */
+code::before {
+  content: '""';
+}
+
+code::after {
+  content: '""';
+}
 html {
   scroll-behavior: smooth;
 }
