@@ -1,6 +1,7 @@
 ---
 import type { Page, Store } from "../markket/index.d";
 import { markketplace } from "../config";
+import Footer from "../components/layout.footer";
 
 import "../styles/global.css";
 
@@ -38,6 +39,7 @@ const icon = {
   </head>
   <body>
     <slot />
+    <Footer store={store} page={page} />
   </body>
 </html>
 
