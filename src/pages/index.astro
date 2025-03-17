@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
 import HomePage from "../components/home.page.astro";
+import Albums from "../components/albums.grid";
 
 import type { Store, Page } from "../markket/index.d";
 
@@ -18,4 +19,5 @@ import "../styles/global.css";
 
 <Layout store={store} page={homepage}>
   <HomePage store={store} page={homepage} />
+  <Albums albums={homepage.albums} store={store} />
 </Layout>
