@@ -1,0 +1,129 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import type { Store, Article } from "../../../markket/index.d";
+import Content from "../../../components/content.blocks";
+import { IconChevronsLeft } from "@tabler/icons-react";
+
+export interface Props {
+  article: Article;
+  store: Store;
+}
+
+export async function getStaticPaths() {
+  const articles = await getCollection("posts");
+  const stores = await getCollection("store");
+  const store = stores?.[0]?.data as any as Store;
+
+  return articles.map((article) => ({
+    params: {
+      slug: article.data.slug
+    },
+    props: {
+      article: article.data,
+      store,
+    },
+  }));
+}
+
+const { article, store } = Astro.props;
+
+// Format the date nicely
+const publishDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<Layout store={store} page={{ Title: article.Title } as any} SEO={article.SEO}>
+  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <!-- Navigation -->
+    <div class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg z-50 border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <a
+          href="/blog"
+          class="text-gray-600 hover:text-blue-600 transition-colors inline-flex items-center gap-2 group"
+        >
+          <IconChevronsLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Blog
+        </a>
+      </div>
+    </div>
+
+    <!-- Article Content -->
+    <div class="relative pt-24 pb-16 px-4">
+      <article class="max-w-4xl mx-auto">
+        {article.SEO?.socialImage?.url && (
+          <div class="relative mb-8 rounded-2xl overflow-hidden shadow-xl">
+            <img
+              src={article.SEO.socialImage.url}
+              alt={article.Title}
+              class="w-full h-auto"
+            />
+          </div>
+        )}
+
+        <!-- Article Header -->
+        <header class="mb-12">
+          {article.tags && article.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mb-6">
+              {article.tags.map(tag => (
+                <span
+                  class="px-3 py-1 text-sm rounded-full"
+                  style={tag.Color ?
+                    `background-color: ${tag.Color}20; color: ${tag.Color}` :
+                    "background-color: #e5e7eb; color: #374151"
+                  }
+                >
+                  {tag.Label}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            {article.Title}
+          </h1>
+
+          {article.SEO?.metaDescription && (
+            <p class="text-xl text-gray-600 mb-6 leading-relaxed">
+              {article.SEO.metaDescription}
+            </p>
+          )}
+>
+        <!-- Article Body -->
+        {article.Content && (
+          <div class="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg">
+            <Content params={{ post: article  }} />
+          </div>
+        )}
+
+        <!-- Article Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-200">
+          <div class="flex flex-wrap justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+              <a href="/blog" class="text-blue-600 hover:text-blue-700 font-medium">
+                ← Back to all articles
+              </a>
+            </div>
+            {article?.urls?.length > 0 && (
+              <div class="flex gap-4">
+                {article.urls.map(url => (
+                  <a
+                    href={url.URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+                  >
+                    {url.Label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </footer>
+      </article>
+    </div>
+  </div>
+</Layout>
