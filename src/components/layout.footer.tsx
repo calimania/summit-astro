@@ -53,7 +53,7 @@ const Footer = ({store, page}: FooterProps) => {
           <div>
             <h3 className="text-white font-semibold mb-4">Learn More</h3>
             <ul className="space-y-2">
-              {pages?.filter(p => ['about', 'newsletter', 'blog'].includes(p.data.slug))?.map((page) => (
+              {pages?.filter(p => ['about', 'newsletter', 'blog', 'products'].includes(p.data.slug))?.map((page) => (
                 <li key={page.id}>
                   <a
                     href={`/${page.data.slug}`}
