@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import type { Store, Page } from "../../markket/index.d";
+import { IconChevronsLeft } from "@tabler/icons-react";
 
 const stores = await getCollection("store");
 const articles = await getCollection("posts");
@@ -21,6 +22,22 @@ const sortedArticles = articles
 
 <Layout store={store} page={blogPage as Page}>
   <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div
+      class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg z-50 border-b border-gray-200"
+    >
+      <div class="max-w-7xl mx-auto px-4 py-4">
+        <a
+          href="/"
+          class="text-gray-600 hover:text-blue-600 transition-colors inline-flex items-center gap-2 group"
+        >
+          <IconChevronsLeft
+            size={16}
+            className="group-hover:-translate-x-1 transition-transform"
+          />
+          Back to Home
+        </a>
+      </div>
+    </div>
     <!-- Hero Section -->
     <div class="relative pt-20 pb-16 px-4">
       <div class="max-w-4xl mx-auto text-center">

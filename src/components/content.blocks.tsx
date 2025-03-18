@@ -148,7 +148,7 @@ export default function PageContent({ params, }: PageContentProps) {
     switch (block.type) {
       case 'paragraph':
         return (
-          <p className="text-gray-700 leading-relaxed mb-6">
+          <p className="text-inherit leading-relaxed mb-6">
             {block.children.map((child, i) => renderInline(child, i))}
           </p>
         );

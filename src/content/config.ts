@@ -7,10 +7,9 @@ const pages = defineCollection({
   loader: strapiLoader({
     contentType: "page",
     filter: `filters[store][slug][$eq]=${markketplace.store_slug}`,
-    populate: 'SEO.socialImage,albums,albums.cover'
+    populate: 'SEO.socialImage,albums,albums.cover,albums.tracks'
   }),
 });
-
 
 const albums = defineCollection({
   loader: strapiLoader({
@@ -19,7 +18,6 @@ const albums = defineCollection({
     populate: 'SEO.socialImage,tracks,tracks.media,tracks.urls,SEO,tracks.SEO,tracks.SEO.socialImage,cover'
   }),
 });
-
 
 const store = defineCollection({
   loader: strapiLoader({
@@ -56,4 +54,5 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { posts, pages, products, events , store, albums  };
+export const collections = { posts, pages, products, events, store, albums };
+

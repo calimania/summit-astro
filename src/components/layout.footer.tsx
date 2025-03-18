@@ -1,4 +1,7 @@
 import type { Page, Store } from '../markket/index.d';
+import { getCollection } from 'astro:content';
+
+const pages = await getCollection('pages');
 
 type FooterProps = {
   store?: Store;
@@ -48,7 +51,20 @@ const Footer = ({store, page}: FooterProps) => {
 
           {/* Contact/Social */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Connect</h3>
+            <h3 className="text-white font-semibold mb-4">Learn More</h3>
+            <ul className="space-y-2">
+              {pages?.filter(p => ['about', 'newsletter', 'blog', 'products'].includes(p.data.slug))?.map((page) => (
+                <li key={page.id}>
+                  <a
+                    href={`/${page.data.slug}`}
+                    target={'_self'}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    {page.data.Title}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
