@@ -7,10 +7,9 @@ const pages = defineCollection({
   loader: strapiLoader({
     contentType: "page",
     filter: `filters[store][slug][$eq]=${markketplace.store_slug}`,
-    populate: 'SEO.socialImage,albums,albums.cover'
+    populate: 'SEO.socialImage,albums,albums.cover,albums.tracks'
   }),
 });
-
 
 const albums = defineCollection({
   loader: strapiLoader({
