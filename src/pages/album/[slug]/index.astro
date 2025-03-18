@@ -126,11 +126,13 @@ const { album, store } = Astro.props as { album: Album; store: Store };
             <div class="group relative overflow-hidden rounded-xl bg-white/10 backdrop-blur-sm">
               {photo.media?.[0]?.url && (
                 <div class="aspect-[4/3] overflow-hidden">
-                  <img
-                    src={photo.media[0].url}
-                    alt={photo.title}
-                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                  <a href={`/album/${album.slug}/${photo.slug}`}>
+                    <img
+                      src={photo.media[0].url}
+                      alt={photo.title}
+                      class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </a>
                 </div>
               )}
               <div class="p-4">
