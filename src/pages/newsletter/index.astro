@@ -31,7 +31,7 @@ const NewsletterPage = pages.find(
       </div>
 
       <div class="relative pt-20 pb-16 px-4">
-        <SubscribeForm store={store} />
+        <SubscribeForm client:load store={store} />
       </div>
       <div class="max-w-2xl mx-auto text-center rounded-lg overflow-hidden">
         {

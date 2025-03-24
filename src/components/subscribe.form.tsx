@@ -102,9 +102,8 @@ export function SubscribeForm({ store }: SubscribeFormProps) {
         </div>
       </form>
 
-      {/* Success Modal */}
       {isSuccess && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 flex items-center justify-center p-4 z-50" style={{ backgroundColor: 'rgba(5, 0, 80, 0.5)' }} onClick={() => setIsSuccess(false)}>
           <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl">
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-semibold text-gray-900">Thank you!</h3>
