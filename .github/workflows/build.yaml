@@ -12,6 +12,7 @@ env:
   MARKKET_URL: ${{ secrets.MARKKET_URL }}
   MARKKETPLACE_URL: ${{ secrets.MARKKETPLACE_URL }}
   STORE_SLUG: ${{ secrets.STORE_SLUG }}
+  PUBLIC_POSTHOG_KEY : ${{ secrets.PUBLIC_POSTHOG_KEY }}
 
 permissions:
   contents: write
@@ -51,9 +52,6 @@ jobs:
     permissions:
       pages: write
       id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
