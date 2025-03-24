@@ -1,5 +1,5 @@
 @import "tailwindcss";
-/* @import "./blocks.scss"; */
+@import "./blocks.scss";
 code::before {
   content: '""';
 }

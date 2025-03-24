@@ -1,17 +1,21 @@
+
 $markket-yellow: #fbda0f;
+$bg-markket-yellow: #fbda0f;
 $markket-blue: #0051ba;
 $markket-pink: #e4007c;
 $markket-cyan: #00ffff;
 
 
 .blocks-content {
+
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold mb-6;
+    font-weight: bold;
     background: linear-gradient(90deg, $markket-blue, $markket-pink);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
+  strong { }
   h1 { @apply text-4xl md:text-5xl; }
   h2 { @apply text-3xl md:text-4xl; }
   h3 { @apply text-2xl md:text-3xl; }
@@ -24,33 +28,6 @@ $markket-cyan: #00ffff;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-    // Style for Mantine's Prism component
-    .mantine-Prism-root {
-      @apply rounded-lg;
-      background: linear-gradient(
-        135deg,
-        rgba($markket-blue, 0.05) 0%,
-        rgba($markket-pink, 0.05) 100%
-      );
-    }
-
-    .mantine-Prism-line {
-      &:hover {
-        background: rgba($markket-yellow, 0.1);
-      }
-    }
-
-    .mantine-Prism-lineNumber {
-      color: rgba($markket-blue, 0.5);
-    }
-
-    .mantine-Prism-copy {
-      @apply opacity-50 transition-opacity duration-200;
-      &:hover {
-        @apply opacity-100;
-        color: $markket-pink;
-      }
-    }
   }
 
   .inline-code {
@@ -65,13 +42,13 @@ $markket-cyan: #00ffff;
   }
 
   // Special styling for code blocks that are direct children of paragraphs
-  p > code {
-    @apply mx-1;
+  p {
+    margin-bottom: 1.5rem;
   }
 
   // Paragraphs with better readability
   p {
-    @apply text-gray-800 mb-6 leading-relaxed;
+    color: #333;
 
     strong {
       color: $markket-pink;
@@ -131,7 +108,6 @@ $markket-cyan: #00ffff;
 
     &::after {
       content: '';
-      @apply absolute bottom-0 left-0 w-full h-0.5 bg-markket-yellow;
       transform: scaleX(0);
       transition: transform 0.3s ease;
     }
