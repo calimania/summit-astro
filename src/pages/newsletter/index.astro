@@ -1,7 +1,10 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import type { Store, Article } from "../../markket/index.d";
+import type { Store } from "../../markket/index.d";
+import PageContent from "../../components/content.blocks";
+
+import SubscribeForm from "../../components/subscribe.form";
 
 const stores = await getCollection("store");
 const store = stores?.[0]?.data as any as Store;
@@ -23,11 +26,12 @@ const NewsletterPage = pages.find(
           {NewsletterPage?.Title || "Newsletter "}
         </h1>
         <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          {
-            NewsletterPage?.SEO?.metaDescription ||
-              "Subscribe to our newsletter to get the latest updates"
-          }
+          <PageContent params={{ page: NewsletterPage as any }} />
         </p>
+      </div>
+
+      <div class="relative pt-20 pb-16 px-4">
+        <SubscribeForm store={store} />
       </div>
     </div>
   </div>
