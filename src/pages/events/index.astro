@@ -8,13 +8,16 @@ const stores = await getCollection("store");
 const pages = await getCollection("pages");
 const events = await getCollection("events");
 
-const eventsPage = pages.find((page) => page?.data?.slug === "events")?.data as Page;
-const store = stores?.[0]?.data as Store;
+const eventsPage = pages.find((page) => page?.data?.slug === "events")
+  ?.data as Page;
+const store = stores?.[0]?.data as any as Store;
 
 // Sort events by start date
 const sortedEvents = events
-  .map(event => event.data)
-  .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+  .map((event) => event.data)
+  .sort(
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+  );
 
 // Helper function to format date
 const formatEventDate = (startDate: string, endDate: string) => {
@@ -22,20 +25,20 @@ const formatEventDate = (startDate: string, endDate: string) => {
   const end = new Date(endDate);
 
   if (start.toDateString() === end.toDateString()) {
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
+    return new Intl.DateTimeFormat("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     }).format(start);
   }
 
-  return `${new Intl.DateTimeFormat('en-US', {
-    month: 'long',
-    day: 'numeric',
-  }).format(start)} - ${new Intl.DateTimeFormat('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
+  return `${new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+  }).format(start)} - ${new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
   }).format(end)}`;
 };
 ---
@@ -45,88 +48,107 @@ const formatEventDate = (startDate: string, endDate: string) => {
     <!-- Hero Section -->
     <div class="relative pt-20 pb-16 px-4">
       <div class="max-w-4xl mx-auto text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <h1
+          class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+        >
           {eventsPage?.Title || "Upcoming Events"}
         </h1>
 
-        {eventsPage?.Content && (
-          <div class="prose prose-lg max-w-none">
-            <Content params={{ page: eventsPage }} />
-          </div>
-        )}
+        {
+          eventsPage?.Content && (
+            <div class="prose prose-lg max-w-none">
+              <Content params={{ page: eventsPage }} />
+            </div>
+          )
+        }
       </div>
     </div>
 
     <!-- Events Grid -->
     <div class="max-w-7xl mx-auto px-4 pb-20">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {sortedEvents.map((event) => (
-          <a
-            href={`/events/${event.slug}`}
-            class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-          >
-            {/* Event Image */}
-            {event.Thumbnail?.url && (
-              <div class="aspect-[3/2] overflow-hidden relative">
-                <img
-                  src={event.Thumbnail.url}
-                  alt={event.Name}
-                  class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-                />
-                {/* Price Badge */}
-                <div class="absolute top-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium">
-                  {event.usd_price === 0 ? "Free" : `$${event.usd_price}`}
+        {
+          sortedEvents.map((event) => (
+            <a
+              href={`/events/${event.slug}`}
+              class="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              {/* Event Image */}
+              {event.Thumbnail?.url && (
+                <div class="aspect-[3/2] overflow-hidden relative">
+                  <img
+                    src={event.Thumbnail.url}
+                    alt={event.Name}
+                    class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {/* Price Badge */}
+                  <div class="absolute top-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium">
+                    {event.usd_price === 0 ? "Free" : `$${event.usd_price}`}
+                  </div>
                 </div>
-              </div>
-            )}
-
-            <div class="p-6">
-              {/* Date */}
-              <div class="text-blue-600 text-sm font-medium mb-2">
-                {formatEventDate(event.startDate, event.endDate)}
-              </div>
-
-              {/* Title */}
-              <h3 class="text-xl font-bold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">
-                {event.Name}
-              </h3>
-
-              {/* Description */}
-              {event.Description && (
-                <p class="text-gray-600 text-sm line-clamp-3 mb-4">
-                  {event.SEO?.metaDescription}
-                </p>
               )}
 
-              {/* Tags */}
-              {event.Tag && event.Tag.length > 0 && (
-                <div class="flex flex-wrap gap-2 mt-4">
-                  {event.Tag.map((tag) => (
-                    <span
-                      class="px-3 py-1 text-xs rounded-full"
-                      style={tag.Color ?
-                        `background-color: ${tag.Color}20; color: ${tag.Color}` :
-                        "background-color: #e5e7eb; color: #374151"
-                      }
+              <div class="p-6">
+                {/* Date */}
+                <div class="text-blue-600 text-sm font-medium mb-2">
+                  {formatEventDate(event.startDate, event.endDate)}
+                </div>
+
+                {/* Title */}
+                <h3 class="text-xl font-bold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">
+                  {event.Name}
+                </h3>
+
+                {/* Description */}
+                {event.Description && (
+                  <p class="text-gray-600 text-sm line-clamp-3 mb-4">
+                    {event.SEO?.metaDescription}
+                  </p>
+                )}
+
+                {/* Tags */}
+                {event.Tag && event.Tag.length > 0 && (
+                  <div class="flex flex-wrap gap-2 mt-4">
+                    {event.Tag.map((tag) => (
+                      <span
+                        class="px-3 py-1 text-xs rounded-full"
+                        style={
+                          tag.Color
+                            ? `background-color: ${tag.Color}20; color: ${tag.Color}`
+                            : "background-color: #e5e7eb; color: #374151"
+                        }
+                      >
+                        {tag.Label}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Capacity Indicator */}
+                {event.maxCapacity && (
+                  <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      {tag.Label}
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                      />
+                    </svg>
+                    <span>
+                      {event.maxCapacity - (event.amountSold || 0)} spots left
                     </span>
-                  ))}
-                </div>
-              )}
-
-              {/* Capacity Indicator */}
-              {event.maxCapacity && (
-                <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  <span>{event.maxCapacity - (event.amountSold || 0)} spots left</span>
-                </div>
-              )}
-            </div>
-          </a>
-        ))}
+                  </div>
+                )}
+              </div>
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>
