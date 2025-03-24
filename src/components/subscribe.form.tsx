@@ -3,8 +3,7 @@
 import React, { useState, type FormEvent } from 'react';
 import { type Store } from '../markket/index.d';
 import { markketplace } from '../config';
-import { IconRefreshAlert, IconMailbox } from '@tabler/icons-react';
-import { span } from 'framer-motion/client';
+import { IconRefreshAlert, IconMailbox, IconSquareRoundedX } from '@tabler/icons-react';
 
 interface SubscribeFormProps {
   store: Store;
@@ -114,9 +113,7 @@ export function SubscribeForm({ store }: SubscribeFormProps) {
                 className="text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Close</span>
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <IconSquareRoundedX size={24} />
               </button>
             </div>
             <p className="text-gray-600">

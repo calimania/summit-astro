@@ -33,6 +33,19 @@ const NewsletterPage = pages.find(
       <div class="relative pt-20 pb-16 px-4">
         <SubscribeForm store={store} />
       </div>
+      <div class="max-w-2xl mx-auto text-center rounded-lg overflow-hidden">
+        {
+          NewsletterPage?.SEO?.socialImage && (
+            <figure class="relative">
+              <img
+                class="w-full h-auto"
+                src={NewsletterPage?.SEO?.socialImage?.url}
+                alt="Newsletter"
+              />
+            </figure>
+          )
+        }
+      </div>
     </div>
   </div>
 </Layout>
