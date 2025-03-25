@@ -7,16 +7,16 @@
   "baseUrl": ".",
   "paths": {
     "@/layouts/*": [
-      "src/layouts/*"
+      "./src/layouts/*"
     ],
     "@components/*": [
-      "src/components/*"
+      "./src/components/*"
     ],
     "@/styles/*": [
-      "src/styles/*"
+      "./src/styles/*"
     ],
     "@/markket/*": [
-      "src/markket/*"
+      "./src/markket/*"
     ],
   },
   "exclude": [
