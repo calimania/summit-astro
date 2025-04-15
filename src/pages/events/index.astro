@@ -3,6 +3,7 @@ import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import type { Store, Page } from "../../markket/index.d";
 import Content from "../../components/content.blocks";
+import { IconChevronsLeft } from "@tabler/icons-react";
 
 const stores = await getCollection("store");
 const pages = await getCollection("pages");
@@ -44,6 +45,17 @@ const formatEventDate = (startDate: string, endDate: string) => {
 ---
 
 <Layout store={store} page={eventsPage}>
+  <div class="relative pt-8 pb-4 px-4">
+    <div class="mb-8">
+      <a
+        href={`/`}
+        class="text-gray-400 hover:text-white transition-colors inline-flex items-center gap-2"
+      >
+        <IconChevronsLeft size={16} />
+        Back to home
+      </a>
+    </div>
+  </div>
   <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
     <!-- Hero Section -->
     <div class="relative pt-20 pb-16 px-4">
