@@ -71,9 +71,8 @@ export default function PageContent({ params, }: PageContentProps) {
   }
 
 
-  const renderImage = (node: ContentBlock['children'][0], key: number) => {
-    if (!node.url || renderedImages.has(node.url)) return null;
-    if (!node.children?.[0]?.text) return null;
+  const renderImage = (node: ContentBlock['image'], key: number) => {
+    if (!node?.url || renderedImages.has(node.url)) return null;
 
     renderedImages.add(node.url);
 
@@ -87,14 +86,14 @@ export default function PageContent({ params, }: PageContentProps) {
         >
           <img
             src={node.url}
-            alt={node.children[0].text}
+            alt={node?.alternativeText}
             className="w-full transition duration-300 group-hover:scale-105"
             loading="lazy"
           />
         </a>
-        {node.children[0].text && (
+        {node?.alternativeText && (
           <figcaption className="mt-3 text-sm text-center text-gray-600 italic">
-            {node.children[0].text}
+            {node?.alternativeText}
           </figcaption>
         )}
       </figure>
@@ -193,7 +192,7 @@ export default function PageContent({ params, }: PageContentProps) {
         );
 
       case 'image':
-        return renderImage(block.children[0], 0);
+        return renderImage(block.image, 0);
 
       default:
         return null;

@@ -151,6 +151,7 @@ export interface ContentBlock {
   level?: number;
   image?: {
     url: string;
+    alternativeText?: string;
     formats?: {
       thumbnail?: { url: string };
       small?: { url: string };
