@@ -34,6 +34,11 @@ const Footer = ({store, page}: FooterProps) => {
           <div>
             <h3 className="text-white font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
+              <li>
+                <a href="/" className="text-gray-400 hover:text-white transition-colors">
+                  Home
+                </a>
+              </li>
               {store?.URLS?.map((link) => (
                 <li key={link.id}>
                   <a
