@@ -3,6 +3,10 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import Layout from "../../../layouts/Layout.astro";
 import type { Album, Store } from "../../../markket/index.d";
 import { IconChevronsLeft } from "@tabler/icons-react";
+import {
+  BlocksRenderer,
+  type BlocksContent,
+} from "@strapi/blocks-react-renderer";
 
 export interface Props {
   slug: string;
@@ -118,6 +122,24 @@ const { album, store } = Astro.props as { album: Album; store: Store };
       </div>
     </div>
 
+    {/* Album Content Section */}
+    {
+      album.content && (
+        <div class="relative z-10 py-8 px-4">
+          <div class="max-w-4xl mx-auto">
+            <div
+              class="prose prose-lg prose-invert max-w-none text-gray-300
+                  prose-headings:text-white prose-headings:font-bold
+                  prose-a:text-blue-400 hover:prose-a:text-blue-300
+                  prose-strong:text-white
+                  prose-img:rounded-xl prose-img:shadow-lg"
+            >
+              <BlocksRenderer content={album.content as BlocksContent} />
+            </div>
+          </div>
+        </div>
+      )
+    }
     <!-- Photo Grid -->
     <div class="max-w-6xl mx-auto px-4 pb-20">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

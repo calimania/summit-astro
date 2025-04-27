@@ -19,11 +19,13 @@ const Footer = ({store, page}: FooterProps) => {
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
             {store?.Favicon?.url && (
-              <img
-                src={store?.Favicon?.url}
-                alt={`${store.title} logo`}
-                className="h-12 mb-4"
-              />
+              <a href="/">
+                <img
+                  src={store?.Favicon?.url}
+                  alt={`${store.title} logo`}
+                  className="h-12 mb-4"
+                />
+              </a>
             )}
             <p className="text-sm text-gray-400 mb-4 max-w-md">
               {store?.SEO?.metaDescription }
