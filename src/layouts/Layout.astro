@@ -30,8 +30,21 @@ const icon = {
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type={icon.type} href={icon.url} />
+    {page?.SEO?.metaUrl && <link rel="canonical" href={page?.SEO?.metaUrl} />}
+    <meta
+      name="keywords"
+      content={page?.SEO?.metaKeywords || store?.SEO?.metaKeywords}
+    />
+    <meta
+      name="author"
+      content={page?.SEO?.metaAuthor || store?.SEO?.metaAuthor}
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{store?.title || page?.Title}</title>
+    <meta
+      name="article:modified_time"
+      content={page?.updatedAt || store?.updatedAt}
+    />
     {redirect && <meta http-equiv="refresh" content={`0;url=${redirect}`} />}
     <meta name"description" content={page?.SEO?.metaDescription} />
     <meta
@@ -42,6 +55,12 @@ const icon = {
     />
     <meta
       property="og:description"
+      content={SEO?.metaDescription ||
+        page?.SEO?.metaDescription ||
+        store?.SEO?.metaDescription}
+    />
+    <meta
+      name="description"
       content={SEO?.metaDescription ||
         page?.SEO?.metaDescription ||
         store?.SEO?.metaDescription}
