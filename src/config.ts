@@ -4,6 +4,7 @@ export const markketplace = {
   store_slug: import.meta.env.STORE_SLUG || 'dev',
   markketplace: import.meta.env.MARKKETPLACE_URL || 'https://dev.markket.place',
   posthog_id: import.meta.env.PUBLIC_POSTHOG_KEY || '',
+  url: import.meta.env.PUBLIC_URL || 'https://summit.caliman.org',
   content: {
     title: 'Markketplace',
     url: 'https://dev.markket.place',

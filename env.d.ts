@@ -10,5 +10,7 @@ interface ImportMetaEnv {
   /** Identifier to render all the store content during build */
   readonly STORE_SLUG: string;
   /** posthog api key  */
-  readonly POSTHOG_KEY: string;
+  readonly PUBLIC_POSTHOG_KEY: string;
+  /** URL where instance is deployed */
+  readonly PUBLIC_URL: string;
 }

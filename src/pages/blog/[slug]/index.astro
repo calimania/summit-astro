@@ -71,12 +71,11 @@ const publishDate = new Date(article.publishedAt).toLocaleDateString("en-US", {
           )
         }
 
-        <!-- Article Header -->
         <header class="mb-12">
           {
-            article.tags && article.tags.length > 0 && (
+            article.Tags && (
               <div class="flex flex-wrap gap-2 mb-6">
-                {article.tags.map((tag) => (
+                {article?.Tags?.map((tag) => (
                   <span
                     class="px-3 py-1 text-sm rounded-full"
                     style={
@@ -93,20 +92,11 @@ const publishDate = new Date(article.publishedAt).toLocaleDateString("en-US", {
           }
 
           <h1
-            class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
           >
             {article.Title}
           </h1>
 
-          {
-            article.SEO?.metaDescription && (
-              <p class="text-xl text-gray-600 mb-6 leading-relaxed">
-                {article.SEO.metaDescription}
-              </p>
-            )
-          }
-          >
-          <!-- Article Body -->
           {
             article.Content && (
               <div class="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg">

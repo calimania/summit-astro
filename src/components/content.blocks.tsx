@@ -1,3 +1,4 @@
+import { markketplace } from "../config";
 import type { Page, ContentBlock , Album, AlbumTrack, Article } from "../markket/index.d";
 
 
@@ -113,13 +114,15 @@ export default function PageContent({ params, }: PageContentProps) {
       const isImage = node.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i);
       if (isImage && renderedImages.has(node.url as string)) return null;
 
+      const isExternal = !node.url?.startsWith(markketplace.url);
+
       return (
         <a
           key={key}
-          href={node.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-pink-600 transition-colors underline decoration-2 decoration-blue-200 hover:decoration-pink-200"
+          href={!isExternal ? node.url?.replace(markketplace.url, '') : node.url}
+          target={isExternal ? '_blank' : '_self'}
+          rel={isExternal ? "noopener noreferrer" : ''}
+          className={`${isExternal ? 'text-blue-600' : 'text-blue-700'} hover:text-pink-600 transition-colors underline decoration-2 decoration-blue-200 hover:decoration-pink-200`}
         >
           {node.children?.[0]?.text}
         </a>
