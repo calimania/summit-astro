@@ -34,7 +34,6 @@ const { page, store } = Astro.props;
 
 <Layout store={store} page={page} SEO={page?.SEO}>
   <div class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-    <!-- Navigation -->
     <div
       class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-lg z-50 border-b border-gray-200"
     >
@@ -45,14 +44,13 @@ const { page, store } = Astro.props;
         >
           <IconChevronsLeft
             size={16}
-            class="group-hover:-translate-x-1 transition-transform"
+            className="group-hover:-translate-x-1 transition-transform"
           />
           <span>Back to About</span>
         </a>
       </div>
     </div>
 
-    <!-- Hero Section -->
     <div class="relative pt-24 pb-16 px-4">
       <div class="max-w-4xl mx-auto">
         {
@@ -69,18 +67,10 @@ const { page, store } = Astro.props;
         }
 
         <h1
-          class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+          class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
         >
           {page.Title}
         </h1>
-
-        {
-          page?.SEO?.metaDescription && (
-            <p class="text-xl text-gray-600 mb-12 leading-relaxed max-w-3xl">
-              {page.SEO.metaDescription}
-            </p>
-          )
-        }
 
         {
           page?.Content && (
@@ -92,14 +82,13 @@ const { page, store } = Astro.props;
       </div>
     </div>
 
-    <!-- Related Content -->
     {
       page?.albums && page.albums.length > 0 && (
         <div class="relative">
           <div class="absolute inset-0 bg-gradient-to-b from-gray-50 to-gray-100" />
           <div class="relative py-20">
             <div class="max-w-6xl mx-auto px-4">
-              <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
                 Related Albums
               </h2>
               <AlbumsGrid albums={page.albums} store={store} />
@@ -108,8 +97,6 @@ const { page, store } = Astro.props;
         </div>
       )
     }
-
-    <!-- Footer Navigation -->
     <div class="bg-gray-50 border-t border-gray-200">
       <div class="max-w-4xl mx-auto px-4 py-8">
         <div class="flex justify-between items-center">
