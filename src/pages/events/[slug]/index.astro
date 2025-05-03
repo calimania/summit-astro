@@ -33,6 +33,7 @@ const startDate = new Date(event.startDate);
 const endDate = new Date(event.endDate);
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
     weekday: "long",
     month: "long",
     day: "numeric",

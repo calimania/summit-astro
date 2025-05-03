@@ -27,6 +27,7 @@ const formatEventDate = (startDate: string, endDate: string) => {
 
   if (start.toDateString() === end.toDateString()) {
     return new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York",
       month: "long",
       day: "numeric",
       year: "numeric",
@@ -34,9 +35,11 @@ const formatEventDate = (startDate: string, endDate: string) => {
   }
 
   return `${new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
     month: "long",
     day: "numeric",
   }).format(start)} - ${new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
     month: "long",
     day: "numeric",
     year: "numeric",
