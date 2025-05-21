@@ -13,14 +13,12 @@ const eventsPage = pages.find((page) => page?.data?.slug === "events")
   ?.data as Page;
 const store = stores?.[0]?.data as any as Store;
 
-// Sort events by start date
 const sortedEvents = events
   .map((event) => event.data)
   .sort(
     (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
   );
 
-// Helper function to format date
 const formatEventDate = (startDate: string, endDate: string) => {
   const start = new Date(startDate);
   const end = new Date(endDate);
