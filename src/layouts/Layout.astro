@@ -37,10 +37,14 @@ const icon = {
     />
     <meta
       name="author"
-      content={page?.SEO?.metaAuthor || store?.SEO?.metaAuthor}
+      content={SEO?.metaAuthor ||
+        page?.SEO?.metaAuthor ||
+        store?.SEO?.metaAuthor}
     />
     <meta name="generator" content={Astro.generator} />
-    <title>{store?.title || page?.Title}</title>
+    <title>
+      {SEO?.metaTitle || page?.Title || page?.SEO?.metaTitle || store?.title}
+    </title>
     <meta
       name="article:modified_time"
       content={page?.updatedAt || store?.updatedAt}
