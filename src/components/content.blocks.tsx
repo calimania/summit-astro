@@ -114,7 +114,7 @@ export default function PageContent({ params, }: PageContentProps) {
       const isImage = node.url?.match(/\.(jpg|jpeg|png|gif|webp)$/i);
       if (isImage && renderedImages.has(node.url as string)) return null;
 
-      const isExternal = !node.url?.startsWith(markketplace.url);
+      const isExternal = !node.url?.startsWith(markketplace.url) && !node.url?.startsWith('/');
 
       return (
         <a

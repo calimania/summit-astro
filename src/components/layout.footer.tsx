@@ -55,8 +55,6 @@ const Footer = ({store, page}: FooterProps) => {
               ))}
             </ul>
           </div>
-
-          {/* Contact/Social */}
           <div>
             <h3 className="text-white font-semibold mb-4">Learn More</h3>
             <ul className="space-y-2">
@@ -78,22 +76,9 @@ const Footer = ({store, page}: FooterProps) => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-gray-400">
-            © {currentYear} {store?.title || 'All rights reserved.'}
+            © {currentYear} {store?.title || 'Some rights reserved.'}
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            {/* {store?.URLS?.map((link) => (
-              <a
-                key={link.id}
-                href={link.URL}
-                target={link.URL.startsWith('http') ? '_blank' : '_self'}
-                rel="noopener noreferrer"
-                className="text-sm text-gray-400 hover:text-white transition-colors"
-              >
-                {link.Label}
-              </a>
-            ))} */}
-            {/* <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">home</a> */}
-
             {!isHomePage && (
               <a
                 href="/"
