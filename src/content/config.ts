@@ -1,7 +1,7 @@
 import { markketplace } from "../config";
 import { defineCollection } from "astro:content";
 
-import { strapiLoader } from "../markket";
+import { strapiLoader } from "../markket/strapi.api";
 
 const pages = defineCollection({
   loader: strapiLoader({
