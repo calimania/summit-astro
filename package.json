@@ -19,7 +19,7 @@
     "@types/react": "^18.1.0",
     "@types/react-dom": "^18.1.0",
     "astro": "^5.5.2",
-    "cafecito": "^0.11.0",
+    "cafecito": "^0.12.0",
     "framer-motion": "^12.5.0",
     "marked": "^15.0.7",
     "react": "^18.1.0",
